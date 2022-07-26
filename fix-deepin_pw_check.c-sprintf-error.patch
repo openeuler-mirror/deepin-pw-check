@@ -1,0 +1,37 @@
+From b1e0ad33fc949d9bb9aa6f4ce2d566c39e089819 Mon Sep 17 00:00:00 2001
+From: panchenbo <panchenbo@uniontech.com>
+Date: Mon, 16 Aug 2021 11:40:16 +0800
+Subject: [PATCH] fix deepin_pw_check.c sprintf error
+
+---
+ lib/deepin_pw_check.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/lib/deepin_pw_check.c b/lib/deepin_pw_check.c
+index d528ad9..f5fcc99 100644
+--- a/lib/deepin_pw_check.c
++++ b/lib/deepin_pw_check.c
+@@ -255,7 +255,9 @@ bool is_type_valid(const char *pw, char *character_type, int character_num_requi
+ 
+     p = strtok(character_type_tmp, ";");
+     int length = strlen(pw);
+-    char all_character[512] = "\0";
++    char all_character[512];
++    memset(all_character, 0, sizeof(all_character));
++    int offset = 0;
+ 
+     while (p != NULL) {
+         char *next_data_addr = NULL;
+@@ -287,7 +289,8 @@ bool is_type_valid(const char *pw, char *character_type, int character_num_requi
+             }
+         }
+ 
+-        sprintf(all_character, "%s%s", all_character, p);
++        offset = strlen(all_character);
++        sprintf(all_character + offset, "%s", p);
+         DEBUG("p is %s, all_character is %s", p, all_character);
+         int ok = 0;
+         for (int i = 0; i < length; i++) {
+-- 
+2.20.1
+
