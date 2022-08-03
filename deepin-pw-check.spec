@@ -7,12 +7,13 @@
 %endif
 Name:           deepin-pw-check
 Version:        5.0.20.7
-Release:        1
+Release:        2
 Summary:        Used to check password and manager the configuration for password.
 License:        GPL-3.0
 URL:            https://github.com/linuxdeepin/%{name}
 Source0:        %{name}-%{version}.orig.tar.xz
 Source1:        vendor.tar.gz
+Source2:        dde.conf
 
 BuildRequires:  golang
 BuildRequires:  pam-devel
@@ -55,15 +56,10 @@ export GOPATH=%{_builddir}/%{name}-%{version}/vendor:$GOPATH
 %make_build GO_BUILD_FLAGS=-trimpath GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
 
 %post
-pwd-conf-update
-sed -i "s/pam_pwquality.so/pam_deepin_pw_check.so/g" /etc/pam.d/system-auth
-sed -i "s/pam_pwquality.so/pam_deepin_pw_check.so/g" /etc/pam.d/password-auth
+
 
 %postun
-if [ "$1" = "0" ] ; then
-	sed -i "s/pam_deepin_pw_check.so/pam_pwquality.so/g" /etc/pam.d/system-auth
-	sed -i "s/pam_deepin_pw_check.so/pam_pwquality.so/g" /etc/pam.d/password-auth
-fi
+
 
 %install
 mkdir -p %{buildroot}/%{_sysconfdir}/deepin
@@ -72,11 +68,14 @@ export PKG_FILE_DIR=%{_libdir}/pkgconfig
 %make_install PKG_FILE_DIR=%{_libdir}/pkgconfig LIBDIR=lib64 PAM_MODULE_DIR=%{_libdir}/security GOBUILD="go build -compiler gc -ldflags \"-B $BUILDID\""
 %find_lang deepin-pw-check
 
+install -Dm644 %{SOURCE2} %{buildroot}%{_sysconfdir}/deepin/dde.conf
+
 
 %files -f deepin-pw-check.lang
 %doc README.md
 %license
 %dir %{_sysconfdir}/deepin
+%{_sysconfdir}/deepin/dde.conf
 %{_bindir}/pwd-conf-update
 %{_prefix}/lib/deepin-pw-check/deepin-pw-check
 %{_libdir}/libdeepin_pw_check.so.*
@@ -92,5 +91,8 @@ export PKG_FILE_DIR=%{_libdir}/pkgconfig
 %{_includedir}/deepin_pw_check.h
 
 %changelog
+* Tue Aug 02 2022 liweiganga <liweiganga@uniontech.com> - 5.0.20.7-2
+- add dde.conf
+
 * Fri Jul 22 2022 konglidong <konglidong@uniontech.com> - 5.0.20.7-1
 - package init
