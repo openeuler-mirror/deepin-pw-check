@@ -1,13 +1,13 @@
 # Run tests in check section
 # disable for bootstrapping
 %bcond_with check
-%global with_debug 1
+%global with_debug 0
 %if 0%{?with_debug}
 %global debug_package   %{nil}
 %endif
 Name:           deepin-pw-check
 Version:        5.0.20.7
-Release:        2
+Release:        3
 Summary:        Used to check password and manager the configuration for password.
 License:        GPL-3.0
 URL:            https://github.com/linuxdeepin/%{name}
@@ -91,6 +91,9 @@ install -Dm644 %{SOURCE2} %{buildroot}%{_sysconfdir}/deepin/dde.conf
 %{_includedir}/deepin_pw_check.h
 
 %changelog
+* Wed Dec 21 2022 liweiganga <liweiganga@uniontech.com> - 5.0.20.7-3
+- enable debuginfo for fix strip
+
 * Tue Aug 02 2022 liweiganga <liweiganga@uniontech.com> - 5.0.20.7-2
 - add dde.conf
 
