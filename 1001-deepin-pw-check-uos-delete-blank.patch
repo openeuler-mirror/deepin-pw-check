@@ -1,0 +1,34 @@
+From f43960d62583c6e177079b3bab6795450cee3092 Mon Sep 17 00:00:00 2001
+From: songmingliang <songmingliang@uniontech.com>
+Date: Mon, 20 Jun 2022 13:48:00 +0800
+Subject: [PATCH] delete blank
+
+---
+ tool/pwd_conf_update.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tool/pwd_conf_update.c b/tool/pwd_conf_update.c
+index 3f90ee6..cb417df 100644
+--- a/tool/pwd_conf_update.c
++++ b/tool/pwd_conf_update.c
+@@ -303,7 +303,7 @@ int update_conf(OS_TYPE os_type) {
+ 
+     if (iniparser_find_entry(dic, "Password:VALIDATE_POLICY") == 0) {
+         sprintf(append_string + offset,
+-                "VALIDATE_POLICY = %s \n",
++                "VALIDATE_POLICY = %s\n",
+                 default_conf[os_type].validate_policy);
+         DEBUG("set VALIDATE_POLICY");
+     } else {
+@@ -312,7 +312,7 @@ int update_conf(OS_TYPE os_type) {
+         // system(cmd);
+         if (OS_EULER == os_type) {
+ 		 sprintf(append_string + offset,
+-                 "VALIDATE_POLICY = %s \n",
++                 "VALIDATE_POLICY = %s\n",
+                  default_conf[os_type].validate_policy);
+         	DEBUG("set VALIDATE_POLICY after delete");
+         } else {
+-- 
+2.27.0
+
