@@ -6,14 +6,18 @@
 %global debug_package   %{nil}
 %endif
 Name:           deepin-pw-check
-Version:        5.0.20.7
-Release:        3
+Version:        5.1.4
+Release:        1
 Summary:        Used to check password and manager the configuration for password.
 License:        GPL-3.0
 URL:            https://github.com/linuxdeepin/%{name}
-Source0:        %{name}-%{version}.orig.tar.xz
+Source0:        %{name}-%{version}.tar.gz
 Source1:        vendor.tar.gz
 Source2:        dde.conf
+
+Patch1000:	0001-fix-for-UonioTech.patch
+Patch1001:	1000-deepin-pw-check-modify-password-policy.patch
+Patch1002:	1001-deepin-pw-check-uos-delete-blank.patch
 
 BuildRequires:  golang
 BuildRequires:  pam-devel
@@ -22,9 +26,6 @@ BuildRequires:  pkgconfig(gdk-3.0)
 BuildRequires:  deepin-gettext-tools
 BuildRequires:  cracklib-devel
 BuildRequires:  iniparser
-
-Patch0:	        fix-pwd-pam-update-error.patch
-Patch1:         fix-deepin_pw_check.c-sprintf-error.patch
 
 Requires:       polkit
 
@@ -43,9 +44,9 @@ this interface is designed to adapt to fingerprint, face and other authenticatio
 
 %prep
 %setup -q
-patch -p1 < rpm/0001-fix-for-UonioTech.patch
-%patch0 -p1
-%patch1 -p1
+%patch1000 -p1
+%patch1001 -p1
+%patch1002 -p1
 
 tar -xf %{SOURCE1}
 
@@ -91,6 +92,9 @@ install -Dm644 %{SOURCE2} %{buildroot}%{_sysconfdir}/deepin/dde.conf
 %{_includedir}/deepin_pw_check.h
 
 %changelog
+* Mon Apr 03 2023 liweiganga <liweiganga@uniontech.com> - 5.1.4-1
+- update: update to 5.1.4
+
 * Wed Dec 21 2022 liweiganga <liweiganga@uniontech.com> - 5.0.20.7-3
 - enable debuginfo for fix strip
 
