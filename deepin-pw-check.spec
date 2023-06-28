@@ -5,9 +5,10 @@
 %if 0%{?with_debug}
 %global debug_package   %{nil}
 %endif
+
 Name:           deepin-pw-check
 Version:        5.1.4
-Release:        1
+Release:        2
 Summary:        Used to check password and manager the configuration for password.
 License:        GPL-3.0
 URL:            https://github.com/linuxdeepin/%{name}
@@ -92,6 +93,9 @@ install -Dm644 %{SOURCE2} %{buildroot}%{_sysconfdir}/deepin/dde.conf
 %{_includedir}/deepin_pw_check.h
 
 %changelog
+* Wed Jun 28 2023 liweigang <liweiganga@uniontech.com> - 5.1.4-2
+- feat: update golang.org/x/sys
+
 * Mon Apr 03 2023 liweiganga <liweiganga@uniontech.com> - 5.1.4-1
 - update: update to 5.1.4
 
